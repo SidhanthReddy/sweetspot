@@ -1,0 +1,20 @@
+.highlighted-text {
+  color: rgba(224, 99, 99, 0.85);
+  /*  color: rgba(222, 221, 221, 0.85);  alternative colour */
+}
+
+.Love-highlighted-text{
+  color: rgba(224, 99, 216, 0.85);
+}
+
+.plus-highlighted-text{
+  color: rgba(220, 117, 186, 0.92);
+}
+
+.Sugar-highlighted-text{
+  color: rgba(215, 135, 157, 1);
+}
+
+.equal-to-highlighted-text{
+  color: rgba(219, 117, 128, 0.925);
+}
