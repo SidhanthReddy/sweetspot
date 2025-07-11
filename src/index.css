@@ -1,5 +1,98 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Parastoo:wght@400..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Choose ONE of these options for html and body */
+
+/* OPTION 1: Hide scrollbar completely */
+html, body {
+  @apply slim-scrollbar;
+}
+
+/* OPTION 2: Custom scrollbar (comment out Option 1 and uncomment this) */
+/*
+html, body {
+  @apply custom-scrollbar;
+}
+*/
+
+/* OPTION 3: Slim scrollbar (comment out Option 1 and uncomment this) */
+/*
+html, body {
+  @apply slim-scrollbar;
+}
+*/
+
+/* Scrollbar Classes */
+
+/* Option 1: Hide scrollbar completely */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Option 2: Custom scrollbar (12px - wider and more visible) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.custom-scrollbar {
+  scrollbar-width: auto;
+  scrollbar-color: rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.05);
+}
+
+/* Option 3: Ultra slim scrollbar (2px - barely visible) */
+.slim-scrollbar::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
+}
+
+.slim-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 1px;
+}
+
+.slim-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 1px;
+  transition: background 0.3s ease;
+}
+
+.slim-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.slim-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.slim-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}

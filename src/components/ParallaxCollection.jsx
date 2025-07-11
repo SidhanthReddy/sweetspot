@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ParallaxComponent from "./ParallaxComponent";
-import parallaxImage1 from '../assets/parallaxImage1.jpg';
+import parallaxImage1 from '../assets/parallaxImage6.avif';
 import parallaxImage2 from '../assets/parallaxImage2.jpg';
 import parallaxImage3 from '../assets/parallaxImage3.jpg';
 import './components.css';
@@ -8,7 +8,8 @@ import Carousel  from "./Carousel";
 import ReverseCarousel from "./ReverseCarousel";
 import FlipCardCarousel from "./FlipCardCarousel";
 import EquationAnimation from './EquationAnimation';
-
+import VerticalProgressStepper from './VerticalProgressStepper';
+import LazyStepper from './LazyStepper';
 
 function ParallaxCollection(){
 
@@ -49,17 +50,17 @@ function ParallaxCollection(){
         <div className="pt-12 pb-20">
           <h2 className="font-parastoo text-center text-5xl text-[rgba(79,79,79,0.66)]">
           Let <span className="highlighted-text">Your Dreams</span>  be deliciously <span className = "Love-highlighted-text">yours</span></h2>
-          <blockquote className="font-parastoo text-center text-xl italic text-[rgba(55,55,55,0.7)] border-l-4 border-pink-300 pl-4 my-6">
+          <blockquote className="font-parastoo text-center text-xl italic text-[rgba(55,55,55,0.7)] border-l-4 border-pink-300 pl-4 mt-6">
             “Every cake is as unique as the dream behind it — baked just for you.”
           </blockquote>
+          <LazyStepper></LazyStepper>
           <FlipCardCarousel></FlipCardCarousel>
-          <blockquote className="font-parastoo text-center text-3xl text-[rgba(55,55,55,0.7)] border-l-4 border-pink-300 pl-4 my-6">
-            <span className="inline-flex items-center gap-2 justify-center">
+          <blockquote className="font-parastoo text-center text-3xl text-[rgba(55,55,55,0.7)] border-l-4 border-pink-300 pl-4 mt-20 my-6">
+            <span className="inline-flex items-center gap-2 justify-center button-container">
             <button className="animated-gradient-btn font-medium py-2 px-4 rounded-lg transition-colors duration-400 focus:outline-none focus:ring-2 focus:ring-[rgba(224,99,99,0.85)] focus:ring-offset-2 text-white">
               Customize
             </button>
-
-              your own cake
+              your own cake with us today!
             </span>
           </blockquote>
 

@@ -44,7 +44,7 @@ function ReverseCarousel() {
                 
                 {/* Buy Now Button */}
                 <button
-                  className="w-full text-white font-medium py-2.5 px-4 rounded-lg transition-colors  duration-400 focus:outline-none focus:ring-2 focus:ring-[rgba(224,99,99,0.85)] focus:ring-offset-2 bg-[rgba(224,99,99,0.85)] hover:text-[rgba(224,99,99,0.85)] hover:bg-white" 
+                  className="w-full text-white font-medium  py-2.5 px-4 rounded-lg transition-colors  duration-400 focus:outline-none focus:ring-2 focus:ring-[rgba(224,99,99,0.85)] focus:ring-offset-2 bg-[rgba(224,99,99,0.85)] hover:text-[rgba(224,99,99,0.85)] hover:bg-white" 
                 >
                   Buy Now
                 </button>
