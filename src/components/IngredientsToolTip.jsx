@@ -32,7 +32,7 @@ function IngredientsToolTip({ cake, cardId }) {
           
           {/* Tooltip */}
           {hoveredCard === cardId && (
-            <div className="absolute z-10 w-80 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg -top-2 left-6 transform -translate-y-full">
+            <div className="absolute z-10 w-80 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg -top-2 left-0 transform -translate-y-full">
               <div className="leading-relaxed">
                 {cake.ingredients}
               </div>

@@ -53,6 +53,16 @@ function ParallaxCollection(){
             “Every cake is as unique as the dream behind it — baked just for you.”
           </blockquote>
           <FlipCardCarousel></FlipCardCarousel>
+          <blockquote className="font-parastoo text-center text-3xl text-[rgba(55,55,55,0.7)] border-l-4 border-pink-300 pl-4 my-6">
+            <span className="inline-flex items-center gap-2 justify-center">
+            <button className="animated-gradient-btn font-medium py-2 px-4 rounded-lg transition-colors duration-400 focus:outline-none focus:ring-2 focus:ring-[rgba(224,99,99,0.85)] focus:ring-offset-2 text-white">
+              Customize
+            </button>
+
+              your own cake
+            </span>
+          </blockquote>
+
         </div>
       </section>
     </div>

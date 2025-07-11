@@ -13,8 +13,9 @@ export default {
         winky: ['"Winky Sans"', 'sans-serif'],
       },
       animation: {
-        "loop-scroll": "loop-scroll 50s linear infinite",
-        "loop-scroll-reverse": "loop-scroll-reverse 50s linear infinite",
+        "loop-scroll": "loop-scroll 200s linear infinite",
+        "loop-scroll-reverse": "loop-scroll-reverse 200s linear infinite",
+        "loop-scroll-flip": "loop-scroll-flip 120s linear infinite", 
         'fade-in-1': 'fadeIn 0.6s ease forwards 0.3s',
         'fade-in-2': 'fadeIn 0.6s ease forwards 0.7s',
         'fade-in-3': 'fadeIn 0.6s ease forwards 1.1s',
@@ -32,6 +33,10 @@ export default {
           from: { transform: "translateX(-100%)" },
           to: { transform: "translateX(0)" },
         },
+        "loop-scroll-flip": {  // ← New keyframe for flip cards
+          from: { transform: "translateX(-100%)" },
+          to: { transform: "translateX(0)" },
+        },
         fadeIn: {
           '0%': { opacity: 0 },
           '100%': { opacity: 1 },
@@ -39,29 +44,32 @@ export default {
       },
     },
   },
-  plugins: [
-    function({ addUtilities }) {
-      addUtilities({
-        '.animate-loop-scroll:hover': {
-          'animation-play-state': 'paused',
-        },
-        '.animate-loop-scroll-reverse:hover': {
-          'animation-play-state': 'paused',
-        },
-        // 3D Transform utilities for flip cards
-        '.perspective-1000': {
-          perspective: '1000px',
-        },
-        '.transform-style-preserve-3d': {
-          'transform-style': 'preserve-3d',
-        },
-        '.backface-hidden': {
-          'backface-visibility': 'hidden',
-        },
-        '.rotate-y-180': {
-          transform: 'rotateY(180deg)',
-        },
-      })
-    }
-  ],
+plugins: [
+  function({ addUtilities }) {
+    addUtilities({
+      '.carousel-container:hover .animate-loop-scroll': {
+        'animation-play-state': 'paused',
+      },
+      '.carousel-container:hover .animate-loop-scroll-reverse': {
+        'animation-play-state': 'paused',
+      },
+      '.carousel-container:hover .animate-loop-scroll-flip': {  // ← Add this
+        'animation-play-state': 'paused',
+      },
+      // Keep your existing utilities
+      '.perspective-1000': {
+        perspective: '1000px',
+      },
+      '.transform-style-preserve-3d': {
+        'transform-style': 'preserve-3d',
+      },
+      '.backface-hidden': {
+        'backface-visibility': 'hidden',
+      },
+      '.rotate-y-180': {
+        transform: 'rotateY(180deg)',
+      },
+    })
+  }
+],
 }
