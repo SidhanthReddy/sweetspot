@@ -1,5 +1,5 @@
 import React from 'react'
-import sweetspotVideo from '../assets/Sweetspot_animation.mp4';
+import sweetspotVideo from '../assets/SweetSpot_animation.mp4';
 
 function NavBar() {
   return (
