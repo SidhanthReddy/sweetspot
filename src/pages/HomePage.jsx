@@ -1,11 +1,13 @@
-import React from 'react'
-import ParallaxCollection from '../components/ParallaxCollection'
-import NavBar from '../components/NavBar'
+import React from 'react';
+import ParallaxCollection from '../components/ParallaxCollection';
+import NavBar from '../components/Navbar.jsx';
+import Footer from '../components/Footer.jsx';
 function HomePage() {
   return (
-    <div className='font-parastoo'>
-     <NavBar></NavBar>
+    <div>
+     <NavBar />
     <ParallaxCollection />
+    <Footer />
     </div>
 
   )

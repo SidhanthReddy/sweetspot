@@ -1,0 +1,130 @@
+@import url("https://fonts.cdnfonts.com/css/parastoo");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Parastoo", sans-serif;
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))] min-h-screen;
+  }
+
+  /* Removed forced border for all elements */
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    /* Light Theme */
+    --background: 0 0% 100%;
+    --foreground: 330 15% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 330 15% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 330 15% 15%;
+    --primary: 340 75% 55%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 350 100% 88%;
+    --secondary-foreground: 340 75% 25%;
+    --muted: 355 60% 95%;
+    --muted-foreground: 330 8% 50%;
+    --accent: 320 70% 85%;
+    --accent-foreground: 340 75% 25%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 350 30% 88%;
+    --input: 350 30% 88%;
+    --ring: 340 75% 55%;
+    --radius: 0.75rem;
+
+    /* Brand colors */
+    --sweetspot-main: 0 72% 63%;
+    --sweetspot-alt1: 316 70% 63%;
+    --sweetspot-alt2: 325 62% 66%;
+    --sweetspot-alt3: 348 47% 69%;
+    --sweetspot-alt4: 355 66% 66%;
+  }
+
+  .dark {
+    --background: 330 15% 8%;
+    --foreground: 350 25% 95%;
+    --card: 330 15% 12%;
+    --card-foreground: 350 25% 95%;
+    --popover: 330 15% 12%;
+    --popover-foreground: 350 25% 95%;
+    --primary: 340 75% 65%;
+    --primary-foreground: 330 15% 8%;
+    --secondary: 330 15% 18%;
+    --secondary-foreground: 350 25% 95%;
+    --muted: 330 15% 18%;
+    --muted-foreground: 330 8% 65%;
+    --accent: 330 15% 22%;
+    --accent-foreground: 350 25% 95%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 350 25% 95%;
+
+    --sweetspot-main: 340 75% 65%;
+    --sweetspot-alt1: 316 70% 73%;
+    --sweetspot-alt2: 325 62% 72%;
+    --sweetspot-alt3: 348 47% 69%;
+    --sweetspot-alt4: 355 66% 66%;
+  }
+}
+
+@layer components {
+  .sweet-card {
+    background: linear-gradient(145deg, hsl(var(--card)), hsl(355 60% 98%));
+    box-shadow: 0 10px 40px -10px hsl(var(--sweetspot-main) / 0.2);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .sweet-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 30px hsl(var(--sweetspot-main) / 0.15);
+  }
+
+  .sweet-button {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--sweetspot-main)),
+      hsl(var(--sweetspot-alt1))
+    );
+    box-shadow: 0 0 30px hsl(var(--sweetspot-main) / 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sweet-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px -10px hsl(var(--sweetspot-main) / 0.2);
+  }
+
+  .hero-pattern {
+    background-image: radial-gradient(
+        circle at 20% 20%,
+        hsl(var(--sweetspot-main) / 0.15) 0%,
+        transparent 25%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        hsl(var(--sweetspot-alt1) / 0.15) 0%,
+        transparent 25%
+      ),
+      radial-gradient(
+        circle at 40% 60%,
+        hsl(var(--sweetspot-alt2) / 0.2) 0%,
+        transparent 30%
+      );
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 20px hsl(var(--sweetspot-main) / 0.3);
+  }
+}

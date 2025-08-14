@@ -32,7 +32,7 @@ function ParallaxComponent({ content, image }) {
   return (
     <div
       ref={parallaxRef}
-      className="relative w-full h-[800px] overflow-hidden flex items-center justify-center"
+      className="relative w-full h-[400px] sm:h-[800px] overflow-hidden flex items-center justify-center"
     >
       {/* Parallax background */}
       <div
@@ -47,7 +47,7 @@ function ParallaxComponent({ content, image }) {
       {/* Content overlay */}
       <div className="relative z-10">
         <blockquote className="bg-none bg-opacity-80 p-6 rounded-xl text-white  text-center max-w-4xl">
-          <p className="font-parastoo text-center text-5xl">
+          <p className="font-parastoo text-center text-3xl sm:text-5xl">
             {content}
           </p>
         </blockquote>

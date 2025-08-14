@@ -8,9 +8,9 @@ function FlipCardCarousel() {
     <div className="overflow-hidden w-full pb-4 pt-8 carousel-container">
       <div className="flex">
         {/* First Carousel */}
-        <div className='flex space-x-16 animate-loop-scroll-flip'>
+        <div className='flex space-x-12 sm:space-x-16 animate-loop-scroll-flip ml-12 sm:ml-16'>
           {duplicatedCards.map((card, index) => (
-            <div key={`carousel1-${card.id}-${index}`} className="w-[320px] h-[400px] flex-shrink-0 group perspective-1000">
+            <div key={`carousel1-${card.id}-${index}`} className="w-[220px] sm:w-[320px] h-[300px] sm:h-[400px] flex-shrink-0 group perspective-1000">
               {/* Flip Card Container */}
               <div className="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180">
                 
@@ -18,15 +18,15 @@ function FlipCardCarousel() {
                 <div className="absolute inset-0 w-full h-full bg-white rounded-lg shadow-md backface-hidden border border-gray-200">
                   <div className="p-6 h-full flex flex-col justify-center items-start relative">
                     {/* Large decorative opening quote */}
-                    <div className="text-6xl text-gray-300 font-serif leading-none mb-1">"</div>
+                    <div className="text-4xl sm:text-6xl text-gray-300 font-serif leading-none mb-1">"</div>
                     
                     <div className="pl-4 relative -mt-2">
-                      <p className="font-parastoo text-2xl text-gray-800 text-left leading-relaxed italic mb-4">
+                      <p className="font-parastoo text-lg sm:text-2xl text-gray-800 text-left leading-relaxed italic mb-4">
                         {card.text}
                       </p>
                       
                       {/* Closing quote mark */}
-                      <div className="text-4xl text-gray-300 font-serif leading-none text-right">"</div>
+                      <div className="text-2xl sm:text-4xl text-gray-300 font-serif leading-none text-right">"</div>
                     </div>
                     
                     {/* Optional: Add a subtle left border to emphasize the quote */}
@@ -47,9 +47,9 @@ function FlipCardCarousel() {
         </div>
 
         {/* Second Carousel - Continues seamlessly */}
-        <div className='flex space-x-16 animate-loop-scroll-flip ml-16'>
+                <div className='flex space-x-12 sm:space-x-16 animate-loop-scroll-flip ml-12 sm:ml-16'>
           {duplicatedCards.map((card, index) => (
-            <div key={`carousel2-${card.id}-${index}`} className="w-[320px] h-[400px] flex-shrink-0 group perspective-1000">
+            <div key={`carousel2-${card.id}-${index}`} className="w-[220px] sm:w-[320px] h-[300px] sm:h-[400px] flex-shrink-0 group perspective-1000">
               {/* Flip Card Container */}
               <div className="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180">
                 
@@ -57,15 +57,15 @@ function FlipCardCarousel() {
                 <div className="absolute inset-0 w-full h-full bg-white rounded-lg shadow-md backface-hidden border border-gray-200">
                   <div className="p-6 h-full flex flex-col justify-center items-start relative">
                     {/* Large decorative opening quote */}
-                    <div className="text-6xl text-gray-300 font-serif leading-none mb-1">"</div>
+                    <div className="text-4xl sm:text-6xl text-gray-300 font-serif leading-none mb-1">"</div>
                     
                     <div className="pl-4 relative -mt-2">
-                      <p className="font-parastoo text-2xl text-gray-800 text-left leading-relaxed italic mb-4">
+                      <p className="font-parastoo text-md sm:text-2xl text-gray-800 text-left leading-relaxed italic mb-4">
                         {card.text}
                       </p>
                       
                       {/* Closing quote mark */}
-                      <div className="text-4xl text-gray-300 font-serif leading-none text-right">"</div>
+                      <div className="text-2xl sm:text-4xl text-gray-300 font-serif leading-none text-right">"</div>
                     </div>
                     
                     {/* Optional: Add a subtle left border to emphasize the quote */}
