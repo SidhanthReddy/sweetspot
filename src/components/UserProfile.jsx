@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { logout } from '../Services/authService';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Calendar, Shield, LogOut, MapPin, Phone, Edit2, Check, X } from 'lucide-react';
-import Navbar from './Navbar';
+import Navbar from './NavBar';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';

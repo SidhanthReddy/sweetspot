@@ -10,7 +10,7 @@ import three from "../assets/three.png";
 import four from "../assets/four.png";
 import head from "../assets/head.jpg";
 import join from "../assets/join.png";
-import NavBar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import AboutHero from "../components/AboutHero";
 import HowItWorksSection from "../components/HowItWorks";
