@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { logout } from '../Services/authService';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Calendar, Shield, LogOut, MapPin, Phone, Edit2, Check, X } from 'lucide-react';
-import Navbar from './Navbar';
+import NavBar from './NavBar';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -157,7 +157,7 @@ const UserProfile = () => {
   if (loading) {
     return (
       <>
-        <Navbar />
+        <NavBar />
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-400 mx-auto"></div>
@@ -171,7 +171,7 @@ const UserProfile = () => {
   if (!user) {
     return (
       <>
-        <Navbar />
+        <NavBar />
         <div className="min-h-screen bg-soft-pink flex items-center justify-center">
           <div className="text-center">
             <p className="text-gray-600 mb-4">Please log in to view your profile</p>
@@ -189,7 +189,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <Navbar />
+      <NavBar />
       <div className="min-h-screen bg-soft-pink py-8">
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
