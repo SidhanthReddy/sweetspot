@@ -7,7 +7,8 @@ const FileUpload = ({
   onDrop,
   onFileSelect,
   selectedFiles,
-  onShowModal
+  onShowModal,
+  onShowQuickDrawModal // Add this new prop
 }) => {
   const handleRemoveFile = () => {
     onFileSelect([]);
@@ -23,20 +24,21 @@ const FileUpload = ({
 
   return (
     <div className="space-y-0">
-    <div className="flex items-center mb-4 text-xl">
-      <div className="flex gap-2 flex-1">
-        <button
-          type="button"
-          onClick={onShowModal}
-          className="pl-1 py-1 rounded font-medium transition-colors hover:underline text-[rgba(224,99,99,0.85)]"
-        >
-          Select
-        </button>
-        <span className="text-gray-500 self-center">from Existing Cakes</span>
+      <div className="flex items-center mb-4 text-xl">
+        <span className="flex-1 text-gray-500">
+          <button
+            type="button"
+            onClick={onShowModal}
+            className="font-medium transition-colors hover:underline text-[rgba(224,99,99,0.85)]"
+          >
+            Select
+          </button>{" "}
+          from Existing Cakes
+        </span>
+        <span className="text-gray-500 mx-4">OR</span>
+        <div className="flex-1"></div>
       </div>
-      <span className="text-gray-500 mx-4">OR</span>
-      <div className="flex-1"></div>
-    </div>
+
 
       
       <div
@@ -66,6 +68,20 @@ const FileUpload = ({
       <p className="text-xs text-gray-500">
         Accepted file types: .jpg, .gif, .png, .pdf, .jpeg, .bmp, .Max, file size: 2 MB, Max. files: 1.
       </p>
+      <div className="flex items-center mb-4 mt-4 text-xl">
+        <span className="text-gray-500">
+          You can also use{" "}
+          <button
+            type="button"
+            onClick={onShowQuickDrawModal}
+            className="font-medium transition-colors hover:underline text-[rgba(224,99,99,0.85)]"
+          >
+            QuickDraw AI Generator
+          </button>{" "}
+          to create custom cake designs
+        </span>
+      </div>
+
 
       {/* Display Selected File */}
       {selectedFiles.length > 0 && (

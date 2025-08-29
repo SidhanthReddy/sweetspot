@@ -131,6 +131,7 @@ const OrderDetails = ({ orderData }) => {
                   {/* Cake Image */}
                   <div className="flex-shrink-0">
                     <img
+                      draggable="false"
                       src={cake.cakeImage}
                       alt={cake.cakeName}
                       className="w-full lg:w-48 h-48 object-cover rounded-xl border border-gray-200 shadow-sm"

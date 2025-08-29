@@ -9,11 +9,11 @@ import SelectedModel from './SelectedModel';
 import ModelsModal from './ModelsModal';
 import CustomCakeConfirmation from './CustomCakeConfirmation';
 import CartModal from './CartModal'; // Import CartModal
-
+import QuickDrawModal from './QuickDrawModal'; 
+import { ValidationModal } from "./ThemedModals";
 const CustomizationForm = () => {
   const { addToCart, cartItems, updateQuantity, removeFromCart } = useCart(); // Use the cart context
   const showToast = useToast(); // Use the toast hook
-
   const [formData, setFormData] = useState({
     flavor: '',
     weight: '',
@@ -21,6 +21,29 @@ const CustomizationForm = () => {
     deliveryDate: '',
     message: ''
   });
+  const [modals, setModals] = useState({
+    error: false,
+    validation: false,
+    errorMessage: "",
+    errorTitle: "",
+  });
+
+  const showValidationModal = () => {
+  setModals(prev => ({
+    ...prev,
+    validation: true,
+    }));
+  };
+
+  const closeModals = () => {
+      setModals({
+        error: false,
+        validation: false,
+        errorMessage: "",
+        errorTitle: "",
+      });
+  };
+
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -29,16 +52,16 @@ const CustomizationForm = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [calculatedPrice, setCalculatedPrice] = useState(null);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false); // Add cart modal state
-
+  const [showQuickDrawModal, setShowQuickDrawModal] = useState(false);
   const existingModels = [
-    { id: 1, name: 'Classic Wedding Cake', image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=300&h=200&fit=crop&auto=format', category: 'Wedding' },
-    { id: 2, name: 'Birthday Celebration', image: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=300&h=200&fit=crop&auto=format', category: 'Birthday' },
-    { id: 3, name: 'Chocolate Delight', image: 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=300&h=200&fit=crop&auto=format', category: 'Special' },
-    { id: 4, name: 'Floral Fantasy', image: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=300&h=200&fit=crop&auto=format', category: 'Wedding' },
-    { id: 5, name: 'Kids Party Fun', image: 'https://images.unsplash.com/photo-1557925923-cd4648e211a0?w=300&h=200&fit=crop&auto=format', category: 'Birthday' },
-    { id: 6, name: 'Elegant Rose', image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&h=200&fit=crop&auto=format', category: 'Special' },
-    { id: 7, name: 'Tiered Masterpiece', image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=300&h=200&fit=crop&auto=format', category: 'Wedding' },
-    { id: 8, name: 'Cartoon Character', image: 'https://images.unsplash.com/photo-1607478900766-efe13248b125?w=300&h=200&fit=crop&auto=format', category: 'Birthday' }
+    { id: 1, name: 'Classic Wedding Cake', image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=512&h=512&fit=crop&auto=format', category: 'Wedding' },
+    { id: 2, name: 'Birthday Celebration', image: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=512&h=512&fit=crop&auto=format', category: 'Birthday' },
+    { id: 3, name: 'Chocolate Delight', image: 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=512&h=512&fit=crop&auto=format', category: 'Special' },
+    { id: 4, name: 'Floral Fantasy', image: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=512&h=512&fit=crop&auto=format', category: 'Wedding' },
+    { id: 5, name: 'Kids Party Fun', image: 'https://images.unsplash.com/photo-1557925923-cd4648e211a0?w=512&h=512&fit=crop&auto=format', category: 'Birthday' },
+    { id: 6, name: 'Elegant Rose', image: 'https://images.unsplash.com/photo-1582180834946-f3d376b18376?w=512&h=512&fit=crop&auto=format', category: 'Special' },
+    { id: 7, name: 'Tiered Masterpiece', image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=512&h=512&fit=crop&auto=format', category: 'Wedding' },
+    { id: 8, name: 'Cartoon Character', image: 'https://images.unsplash.com/photo-1607478900766-efe13248b125?w=512&h=512&fit=crop&auto=format', category: 'Birthday' }
   ];
     
   // Add this pricing calculation function
@@ -185,7 +208,7 @@ const CustomizationForm = () => {
     // Calculate the final price before submission
     const finalPrice = calculatePrice(); 
     if (!formData.flavor || !formData.weight || !formData.budgetRange || !finalPrice) {
-      alert('Please fill all required fields');
+      showValidationModal();
       return;
     }
 
@@ -253,6 +276,14 @@ const CustomizationForm = () => {
     removeFromCart(itemKey);
   };
 
+  const handleQuickDrawImageSelect = (generatedModel) => {
+  // Handle the selected AI-generated image
+  // Set the generated model as the selected model (similar to handleModelSelect)
+  setSelectedModel(generatedModel);
+  setSelectedFiles([]); // Clear file uploads when selecting AI generated image
+  setShowQuickDrawModal(false); // Close the modal
+};
+
   return (
     <>
       <div className="w-full p-6 bg-white rounded-lg font-parastoo text-[rgba(79,79,79,0.66)]">
@@ -272,6 +303,7 @@ const CustomizationForm = () => {
             onFileSelect={handleFileSelect}
             selectedFiles={selectedFiles}
             onShowModal={() => setShowModal(true)}
+            onShowQuickDrawModal={() => setShowQuickDrawModal(true)}
           />
           
           <SelectedModel 
@@ -279,12 +311,7 @@ const CustomizationForm = () => {
             onRemove={() => setSelectedModel(null)} 
           />
           
-          <ModelsModal
-            showModal={showModal}
-            onClose={() => setShowModal(false)}
-            onModelSelect={handleModelSelect}
-            existingModels={existingModels}
-          />
+
           
           {/* Display calculated price */}
           <PriceDisplay />
@@ -323,7 +350,12 @@ const CustomizationForm = () => {
           </div>
         </div>
       </div>
-
+      <ModelsModal
+        showModal={showModal}
+        onClose={() => setShowModal(false)}
+        onModelSelect={handleModelSelect}
+        existingModels={existingModels}
+      />
       {/* Custom Cake Confirmation Modal */}
       <CustomCakeConfirmation
         isOpen={showConfirmation}
@@ -334,6 +366,18 @@ const CustomizationForm = () => {
         budgetRange={formData.budgetRange}
         formData={formData}
       />
+      <QuickDrawModal
+      showModal={showQuickDrawModal}
+      onClose={() => setShowQuickDrawModal(false)}
+      onImageSelect={handleQuickDrawImageSelect}
+    />
+        <ValidationModal
+          isOpen={modals.validation}
+          onClose={closeModals}
+          title="Complete All Fields"
+          message="Please fill out all required fields: cake flavor, weight, budget range, and ensure a final price is calculated."
+          actionText="Got it"
+        />
     </>
   );
 };

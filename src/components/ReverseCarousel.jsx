@@ -16,6 +16,7 @@ function Carousel() {
     setSelectedCake(cake);
     setIsModalOpen(true);
   };
+  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -60,6 +61,7 @@ function Carousel() {
                   <CakeCard 
                     cake={cake} 
                     onCardClick={handleCardClick}
+                    onOpenModal={handleCardClick}
                     onAddToCart={handleAddToCart}
                     cartItem={cartItem}
                     onUpdateQuantity={handleUpdateQuantity}
@@ -79,6 +81,7 @@ function Carousel() {
                   <CakeCard 
                     cake={cake} 
                     onCardClick={handleCardClick}
+                    onOpenModal={handleCardClick}
                     onAddToCart={handleAddToCart}
                     cartItem={cartItem}
                     onUpdateQuantity={handleUpdateQuantity}

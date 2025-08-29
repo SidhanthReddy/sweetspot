@@ -41,6 +41,7 @@ const CategoryBar = ({ selectedCategory, setSelectedCategory }) => {
                   borderColor: selectedCategory === category.key ? 'rgba(224, 99, 99, 0.85)' : undefined
                 }}>
                   <img
+                    draggable="false"
                     src={category.imageURL}
                     alt={category.name}
                     className="w-full h-full object-cover object-top transition-transform duration-300"

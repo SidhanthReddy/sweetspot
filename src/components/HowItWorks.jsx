@@ -72,6 +72,7 @@ const HowItWorksSection = () => {
                   <div key={i} className="px-2 flex justify-center">
                     <div className="w-full max-w-[600px] h-[400px] rounded-2xl shadow-2xl overflow-hidden relative group">
                       <img 
+                        draggable="false"
                         src={img} 
                         alt={`slide-${i}`} 
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 

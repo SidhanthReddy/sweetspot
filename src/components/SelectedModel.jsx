@@ -10,6 +10,7 @@ const SelectedModel = ({ selectedModel, onRemove }) => {
         <img 
           src={selectedModel.image} 
           alt={selectedModel.name}
+          draggable="false"
           className="w-16 h-16 object-cover rounded"
         />
         <div>

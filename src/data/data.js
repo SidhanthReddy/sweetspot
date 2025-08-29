@@ -40,7 +40,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Birthday Cake", "Shortcake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Egg", "Eggless"],
-    imageURL: "https://images.pexels.com/photos/1126728/pexels-photo-1126728.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1692623615620-b48b8dba0fc8?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 4,
@@ -54,7 +54,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Birthday Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Egg"],
-    imageURL: "https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1719935508469-5d9fafd3db3d?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 5,
@@ -68,7 +68,7 @@ export const cakeData = [
     productType: ["Cheesecake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3],
     eggOptions: ["Egg"],
-    imageURL: "https://images.pexels.com/photos/1028714/pexels-photo-1028714.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1621955511667-e2c316e4575d?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 6,
@@ -82,7 +82,7 @@ export const cakeData = [
     productType: ["Cupcakes"],
     availableWeights: [0.5, 1],
     eggOptions: ["Egg", "Eggless"],
-    imageURL: "https://images.pexels.com/photos/1070850/pexels-photo-1070850.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1572451479139-6a308211d8be?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 7,
@@ -96,7 +96,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Fudge Cake", "Birthday Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Egg", "Eggless"],
-    imageURL: "https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1723476369375-6e6dd9498517?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 8,
@@ -110,7 +110,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Citrus Cake", "Birthday Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Egg", "Eggless"],
-    imageURL: "https://images.pexels.com/photos/1565982/pexels-photo-1565982.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1654546482778-1aeb01f118aa?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 9,
@@ -138,7 +138,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Spice Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Eggless"],
-    imageURL: "https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1728069932353-f78795a973e2?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 11,
@@ -166,7 +166,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Birthday Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Egg", "Eggless"],
-    imageURL: "https://images.pexels.com/photos/1126728/pexels-photo-1126728.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1542826438-bd32f43d626f?auto=compress&cs=tinysrgb&w=400"
   },
     {
     id: 13,
@@ -180,7 +180,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Birthday Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Egg", "Eggless"],
-    imageURL: "https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1542826438-bd32f43d626f?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 14,
@@ -194,7 +194,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Birthday Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Egg"],
-    imageURL: "https://images.pexels.com/photos/1126728/pexels-photo-1126728.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1583420420670-4e110fe77013?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 15,
@@ -222,7 +222,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Spice Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Eggless"],
-    imageURL: "https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1675712843856-ba2cb7d33f3c?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 17,
@@ -236,7 +236,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Birthday Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Egg", "Eggless"],
-    imageURL: "https://images.pexels.com/photos/1414234/pexels-photo-1414234.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1693375602201-f15491719340?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 18,
@@ -250,7 +250,7 @@ export const cakeData = [
     productType: ["Layer Cake", "Birthday Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     eggOptions: ["Egg", "Eggless"],
-    imageURL: "https://images.pexels.com/photos/1070850/pexels-photo-1070850.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1656978796497-5e9211075c6f?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 19,
@@ -264,7 +264,7 @@ export const cakeData = [
     productType: ["Shortcake", "Citrus Cake"],
     availableWeights: [0.5, 1, 1.5, 2, 2.5, 3],
     eggOptions: ["Egg"],
-    imageURL: "https://images.pexels.com/photos/1565982/pexels-photo-1565982.jpeg?auto=compress&cs=tinysrgb&w=400"
+    imageURL: "https://images.unsplash.com/photo-1725143306803-bb141a55c7c6?auto=compress&cs=tinysrgb&w=400"
   },
   {
     id: 20,

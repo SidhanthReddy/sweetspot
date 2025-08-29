@@ -179,6 +179,7 @@ const CartModal = ({
                 >
                   <div className="relative overflow-hidden rounded-lg">
                     <img
+                      draggable="false"
                       src={item.imageURL}
                       alt={item.name}
                       className="w-16 h-16 object-cover transition-transform duration-300 group-hover:scale-110"

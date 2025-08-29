@@ -37,6 +37,7 @@ function FlipCardCarousel() {
                 {/* Back Side - Image */}
                 <div className="absolute inset-0 w-full h-full bg-white rounded-lg shadow-md backface-hidden rotate-y-180 overflow-hidden">
                   <img
+                    draggable="false"
                     src={card.image}
                     className="w-full h-full object-cover"
                   />
@@ -76,6 +77,7 @@ function FlipCardCarousel() {
                 {/* Back Side - Image */}
                 <div className="absolute inset-0 w-full h-full bg-white rounded-lg shadow-md backface-hidden rotate-y-180 overflow-hidden">
                   <img
+                    draggable="false"
                     src={card.image}
                     className="w-full h-full object-cover"
                   />

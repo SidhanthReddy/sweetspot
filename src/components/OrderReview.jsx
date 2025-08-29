@@ -89,6 +89,7 @@ export default function OrderReview({ cartItems, onTotalChange }) {
                     src={item.imageURL || item.cakeImage}
                     alt={item.name || item.cakeName}
                     className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 object-cover rounded-xl border-2 border-green-300 shadow-md"
+                    draggable="false"
                   />
                   {/* Decorative corner accent */}
                   <div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-400 rounded-full shadow-sm"></div>
@@ -141,6 +142,7 @@ export default function OrderReview({ cartItems, onTotalChange }) {
                 className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center border border-[rgba(224,99,99,0.2)] bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300"
               >
                 <img
+                  draggable="false"
                   src={item.imageURL || item.cakeImage}
                   alt={item.name || item.cakeName}
                   className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 object-cover rounded-xl border border-[rgba(224,99,99,0.3)] mx-auto sm:mx-0 flex-shrink-0"
@@ -162,11 +164,6 @@ export default function OrderReview({ cartItems, onTotalChange }) {
                     <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
                       <p className="text-sm sm:text-base text-[rgba(79,79,79,0.7)]">
                         Egg Option:{" "}
-                        <span className="text-[rgba(224,99,99,0.85)] font-semibold">
-                          {item.cakeEggOptions?.length
-                            ? item.cakeEggOptions.join(", ")
-                            : item.eggOption || item.selectedEggOption || "Egg"}
-                        </span>
                       </p>
                       <EggIndicator
                         eggOption={

@@ -41,6 +41,7 @@ const CakeCard = ({
         <img
           src={cake.imageURL}
           alt={cake.name}
+          draggable="false"
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div

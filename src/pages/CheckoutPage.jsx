@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCart } from "../components/CartContext.jsx";
 import ProgressBar from "../components/ProgressBar.jsx";
 import AddressSection from "../components/AddressSection.jsx";
@@ -8,7 +8,14 @@ import OrderReview from "../components/OrderReview.jsx";
 import Decorations from "../components/Decorations.jsx";
 import SavingsPopup from "../components/SavingsPopup.jsx";
 // Removed mockUserProfile import - using dynamic data from auth and address service
-import { ArrowLeft, FileText, CreditCard, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  FileText,
+  CreditCard,
+  Loader2,
+  Clock,
+  Calendar,
+} from "lucide-react";
 import DeliverySteps from "../components/DeliverySteps.jsx";
 import CheckOutHeader from "../components/CheckOutHeader.jsx";
 import NavBar from "../components/NavBar.jsx";
@@ -16,7 +23,11 @@ import OrderPopup from "../components/OrderPopup.jsx";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { addOrder } from "../data/orderData.js";
-import { getAddressByUserId, hasAddress, getFormattedAddress } from "../data/address";
+import {
+  getAddressByUserId,
+  hasAddress,
+  getFormattedAddress,
+} from "../data/address";
 
 // Egg/Eggless Indicator Component
 const EggIndicator = ({ eggOption }) => {
@@ -47,8 +58,49 @@ const EggIndicator = ({ eggOption }) => {
   );
 };
 
+// Utility functions for Indian timezone
+const getIndianDate = (date = new Date()) => {
+  // Create a new date object in Indian timezone
+  const indianTime = new Date(
+    date.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+  );
+  return indianTime;
+};
+
+const getIndianDateString = (date = new Date()) => {
+  // Get Indian date components directly
+  const indianDateStr = date.toLocaleDateString("en-CA", {
+    timeZone: "Asia/Kolkata",
+  }); // en-CA gives YYYY-MM-DD format
+  return indianDateStr;
+};
+
+// Function to create date string from date parts (prevents timezone issues)
+const createDateString = (year, month, day) => {
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(
+    2,
+    "0"
+  )}`;
+};
+
+// Enhanced CheckoutPage.jsx - Key modifications to save delivery date/time
+// Add this utility function at the top of your file (around line 15, after imports)
+const createDeliveryDateTime = (dateString, timeString) => {
+  if (!dateString || !timeString) return null;
+
+  const [year, month, day] = dateString.split("-").map((num) => parseInt(num));
+  const [hours, minutes] = timeString.split(":").map((num) => parseInt(num));
+
+  // Create the delivery datetime
+  const deliveryDateTime = new Date(year, month - 1, day, hours, minutes);
+
+  return deliveryDateTime.toISOString();
+};
+
 export default function CheckoutPage() {
   const navigate = useNavigate();
+  const calendarRef = useRef(null);
+  const timeRef = useRef(null);
 
   // Safe navigation helper
   const safeNavigate = (path) => {
@@ -114,14 +166,198 @@ export default function CheckoutPage() {
   const [loadingMessage, setLoadingMessage] = useState("");
   const [addressLoaded, setAddressLoaded] = useState(false);
 
+  // Calendar and Time state
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isTimeOpen, setIsTimeOpen] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [deliveryTime, setDeliveryTime] = useState("");
+
+  // Get today's date in Indian timezone
+  const todayString = getIndianDateString();
+
+  // Generate time slots (9 AM to 9 PM, 30-minute intervals)
+  const generateTimeSlots = () => {
+    const slots = [];
+
+    // Get current time in Indian timezone
+    const indianNow = getIndianDate();
+    const isToday = deliveryDate === todayString;
+
+    for (let hour = 9; hour <= 21; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        if (hour === 21 && minute > 0) break; // Stop at 9:00 PM
+
+        const time24 = `${hour.toString().padStart(2, "0")}:${minute
+          .toString()
+          .padStart(2, "0")}`;
+        const hour12 = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+        const ampm = hour >= 12 ? "PM" : "AM";
+        const time12 = `${hour12}:${minute
+          .toString()
+          .padStart(2, "0")} ${ampm}`;
+
+        // Check if time slot is in the past for today (using Indian timezone)
+        let isPastTime = false;
+        if (isToday) {
+          const slotTime = new Date(indianNow);
+          slotTime.setHours(hour, minute, 0, 0);
+          // Add 1 hour buffer for preparation time
+          const currentTimePlusBuffer = new Date(
+            indianNow.getTime() + 60 * 60 * 1000
+          );
+          isPastTime = slotTime <= currentTimePlusBuffer;
+        }
+
+        slots.push({
+          value: time24,
+          label: time12,
+          isPastTime: isPastTime,
+          isDisabled: isPastTime,
+        });
+      }
+    }
+    return slots;
+  };
+
+  const timeSlots = generateTimeSlots();
+
+  // Handle click outside calendar and time picker
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setIsCalendarOpen(false);
+      }
+      if (timeRef.current && !timeRef.current.contains(event.target)) {
+        setIsTimeOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Format date for display using Indian locale
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+
+    // Parse the date string and ensure it's treated as local date
+    const [year, month, day] = dateString
+      .split("-")
+      .map((num) => parseInt(num));
+    const date = new Date(year, month - 1, day);
+
+    // Format in Indian locale
+    return date.toLocaleDateString("en-IN", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  // Format complete date time display
+  const formatDisplayDateTime = () => {
+    if (!deliveryDate && !deliveryTime) return "Select Date & Time";
+    if (!deliveryDate) return "Select Date";
+    if (!deliveryTime) return formatDate(deliveryDate) + " - Select Time";
+
+    const timeSlot = timeSlots.find((slot) => slot.value === deliveryTime);
+    return (
+      formatDate(deliveryDate) + " at " + (timeSlot?.label || deliveryTime)
+    );
+  };
+
+  // Generate calendar days with Indian timezone
+  const generateCalendarDays = () => {
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+    const days = [];
+    const currentDate = new Date(startDate);
+
+    // Get today's date string in Indian timezone for comparison
+    const todayDateString = getIndianDateString();
+
+    for (let i = 0; i < 42; i++) {
+      // Create date string directly from date components to avoid timezone conversion issues
+      const dateString = createDateString(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        currentDate.getDate()
+      );
+
+      const isCurrentMonth = currentDate.getMonth() === month;
+      const isToday = dateString === todayDateString;
+      const isSelected = dateString === deliveryDate;
+
+      // Compare date strings instead of Date objects to avoid timezone issues
+      const isPastDate = dateString < todayDateString;
+
+      days.push({
+        date: new Date(currentDate),
+        dateString,
+        day: currentDate.getDate(),
+        isCurrentMonth,
+        isToday,
+        isSelected,
+        isPastDate,
+      });
+
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return days;
+  };
+
+  const handleDateSelect = (dateString) => {
+    setDeliveryDate(dateString);
+    setIsCalendarOpen(false);
+  };
+
+  const handleTimeSelect = (timeValue) => {
+    setDeliveryTime(timeValue);
+    setIsTimeOpen(false);
+  };
+
+  const navigateMonth = (direction) => {
+    setCurrentMonth((prev) => {
+      const newDate = new Date(prev);
+      newDate.setMonth(prev.getMonth() + direction);
+      return newDate;
+    });
+  };
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
   // Load user's saved address and auth data when component mounts or user changes
   useEffect(() => {
     if (user && !addressLoaded) {
       // First, populate user profile from auth data
       const displayName = user.displayName || "";
-      const nameParts = displayName.split(' ');
+      const nameParts = displayName.split(" ");
       const firstName = nameParts[0] || "";
-      const lastName = nameParts.slice(1).join(' ') || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
 
       const initialUserProfile = {
         firstName: firstName,
@@ -137,7 +373,7 @@ export default function CheckoutPage() {
 
       // Check for saved address
       const savedAddress = getAddressByUserId(user.uid);
-      
+
       if (savedAddress) {
         // Update shipping address with saved address
         setShippingAddress({
@@ -156,7 +392,7 @@ export default function CheckoutPage() {
           zipCode: savedAddress.postalCode || "",
         };
       }
-      if (!initialUserProfile.phone && savedAddress.phone) {
+      if (!initialUserProfile.phone && savedAddress?.phone) {
         initialUserProfile.phone = savedAddress.phone;
       }
       setUserProfile(initialUserProfile);
@@ -167,9 +403,11 @@ export default function CheckoutPage() {
   // Update billing address when userProfile or shippingAddress changes
   useEffect(() => {
     if (sameAsShipping) {
-      setBillingAddress(prev => ({
+      setBillingAddress((prev) => ({
         ...prev,
-        name: `${userProfile?.firstName || ""} ${userProfile?.lastName || ""}`.trim(),
+        name: `${userProfile?.firstName || ""} ${
+          userProfile?.lastName || ""
+        }`.trim(),
         email: userProfile?.email || "",
         phone: userProfile?.phone || "",
         street: shippingAddress.street,
@@ -182,9 +420,11 @@ export default function CheckoutPage() {
 
   // Initialize billing address when user profile is loaded
   useEffect(() => {
-    setBillingAddress(prev => ({
+    setBillingAddress((prev) => ({
       ...prev,
-      name: `${userProfile?.firstName || ""} ${userProfile?.lastName || ""}`.trim(),
+      name: `${userProfile?.firstName || ""} ${
+        userProfile?.lastName || ""
+      }`.trim(),
       email: userProfile?.email || "",
       phone: userProfile?.phone || "",
     }));
@@ -221,7 +461,9 @@ export default function CheckoutPage() {
     } else {
       // Reset billing address to user auth data, not static profile
       setBillingAddress({
-        name: `${userProfile?.firstName || ""} ${userProfile?.lastName || ""}`.trim(),
+        name: `${userProfile?.firstName || ""} ${
+          userProfile?.lastName || ""
+        }`.trim(),
         email: userProfile?.email || "",
         phone: userProfile?.phone || "",
         street: "",
@@ -266,6 +508,7 @@ export default function CheckoutPage() {
     setCurrentStep((prev) => prev - 1);
   };
 
+  // Modify the handlePayment function (around line 300) to include the enhanced delivery data
   const handlePayment = async () => {
     try {
       if (!user) {
@@ -274,7 +517,9 @@ export default function CheckoutPage() {
       }
 
       if (!isStep3Valid()) {
-        alert("Please fill out all required fields.");
+        alert(
+          "Please fill out all required fields including delivery date and time."
+        );
         return;
       }
 
@@ -284,6 +529,23 @@ export default function CheckoutPage() {
       // Format addresses for order data
       const formattedShippingAddress = `${shippingAddress.street}, ${shippingAddress.city}, ${shippingAddress.state} ${shippingAddress.zipCode}`;
       const formattedBillingAddress = `${billingAddress.name}, ${billingAddress.street}, ${billingAddress.city}, ${billingAddress.state} ${billingAddress.zipCode}`;
+
+      // Format delivery date and time
+      const selectedTimeSlot = timeSlots.find(
+        (slot) => slot.value === deliveryTime
+      );
+      const formattedDeliveryDateTime =
+        deliveryDate && deliveryTime
+          ? `${formatDate(deliveryDate)} at ${
+              selectedTimeSlot?.label || deliveryTime
+            }`
+          : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString();
+
+      // Create precise delivery datetime for tracking
+      const preciseDeliveryDateTime = createDeliveryDateTime(
+        deliveryDate,
+        deliveryTime
+      );
 
       const orderData = {
         customerName: `${userProfile.firstName} ${userProfile.lastName}`,
@@ -295,17 +557,35 @@ export default function CheckoutPage() {
         cartItems,
         total: cartTotal,
         orderDate: new Date().toLocaleDateString(),
-        estimatedDelivery: new Date(
-          Date.now() + 7 * 24 * 60 * 60 * 1000
-        ).toLocaleDateString(),
+        estimatedDelivery: formattedDeliveryDateTime,
         status: 1,
         cakeName:
           cartItems.length === 1
             ? cartItems[0].name
             : `${cartItems.length} items`,
-        deliveryDate: new Date(
-          Date.now() + 7 * 24 * 60 * 60 * 1000
-        ).toLocaleDateString(),
+
+        // Enhanced delivery tracking data
+        deliveryDate: deliveryDate
+          ? (() => {
+              const [year, month, day] = deliveryDate.split("-");
+              return new Date(
+                parseInt(year),
+                parseInt(month) - 1,
+                parseInt(day)
+              ).toLocaleDateString();
+            })()
+          : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+
+        deliveryTime: deliveryTime || "Not specified",
+        deliveryDateTime: formattedDeliveryDateTime,
+
+        // NEW: Add precise tracking data
+        selectedDeliveryDate: deliveryDate, // Store the selected date string (YYYY-MM-DD)
+        selectedDeliveryTime: deliveryTime, // Store the selected time string (HH:MM)
+        preciseDeliveryDateTime: preciseDeliveryDateTime, // Store the exact datetime as ISO string
+        selectedTimeSlot: selectedTimeSlot?.label || deliveryTime, // Store the formatted time slot
+        orderCreatedAt: new Date().toISOString(), // Store when order was created
+
         amount: `₹${cartTotal.toFixed(2)}`,
         address: formattedShippingAddress,
         image:
@@ -313,26 +593,32 @@ export default function CheckoutPage() {
             ? cartItems[0].imageURL || cartItems[0].image || ""
             : "",
         specialInstructions: "",
+
         // Store actual user and address data
         customerDetails: {
           userId: user.uid,
           displayName: user.displayName,
           email: user.email,
           phoneNumber: user.phoneNumber,
-          emailVerified: user.emailVerified
+          emailVerified: user.emailVerified,
         },
         addressDetails: {
           shipping: {
             ...shippingAddress,
-            coordinates: shippingAddress.latitude && shippingAddress.longitude ? {
-              lat: shippingAddress.latitude,
-              lng: shippingAddress.longitude
-            } : null
+            coordinates:
+              shippingAddress.latitude && shippingAddress.longitude
+                ? {
+                    lat: shippingAddress.latitude,
+                    lng: shippingAddress.longitude,
+                  }
+                : null,
           },
           billing: billingAddress,
           hasSavedAddress: hasAddress(user.uid),
-          addressLastUpdated: hasAddress(user.uid) ? getAddressByUserId(user.uid).lastUpdated : null
-        }
+          addressLastUpdated: hasAddress(user.uid)
+            ? getAddressByUserId(user.uid).lastUpdated
+            : null,
+        },
       };
 
       await addOrder(user.uid, orderData);
@@ -358,7 +644,6 @@ export default function CheckoutPage() {
   const handleCloseOrderModal = () => {
     setShowOrderModal(false);
     if (resetCart) resetCart();
-    safeNavigate("/");
   };
 
   // Validation functions
@@ -375,9 +660,9 @@ export default function CheckoutPage() {
       userProfile?.phone;
 
     const shippingValid =
-      shippingAddress.street && 
-      shippingAddress.city && 
-      shippingAddress.state && 
+      shippingAddress.street &&
+      shippingAddress.city &&
+      shippingAddress.state &&
       shippingAddress.zipCode;
 
     const billingValid = sameAsShipping
@@ -390,7 +675,9 @@ export default function CheckoutPage() {
         billingAddress.state &&
         billingAddress.zipCode;
 
-    return profileValid && shippingValid && billingValid;
+    const deliveryValid = deliveryDate && deliveryTime;
+
+    return profileValid && shippingValid && billingValid && deliveryValid;
   };
 
   // Loading state - show spinner while auth is being checked
@@ -415,9 +702,11 @@ export default function CheckoutPage() {
         <NavBar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-gray-600 mb-4">Please log in to proceed with checkout</p>
-            <button 
-              onClick={() => navigate('/login')}
+            <p className="text-gray-600 mb-4">
+              Please log in to proceed with checkout
+            </p>
+            <button
+              onClick={() => navigate("/login")}
               className="px-6 py-2 bg-red-400 text-white rounded-lg hover:bg-red-500 transition-colors"
             >
               Go to Login
@@ -517,13 +806,20 @@ export default function CheckoutPage() {
       month: "long",
       day: "numeric",
     }),
-    estimatedDelivery: new Date(
-      Date.now() + 7 * 24 * 60 * 60 * 1000
-    ).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }),
+    estimatedDelivery:
+      deliveryDate && deliveryTime
+        ? `${formatDate(deliveryDate)} at ${
+            timeSlots.find((slot) => slot.value === deliveryTime)?.label ||
+            deliveryTime
+          }`
+        : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString(
+            "en-US",
+            {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }
+          ),
   };
 
   // Button content helper
@@ -571,7 +867,7 @@ export default function CheckoutPage() {
 
         {/* Right Side (Form Sections) */}
         <div className="w-full lg:w-[60%] overflow-y-auto overflow-x-visible slim-scrollbar px-4 sm:px-6 md:px-8 lg:px-12 lg:pr-24 lg:pl-12 py-4 sm:py-6 lg:py-8 bg-soft-pink">
-          <div className="max-w-4xl xl:max-w-5xl mx-auto space-y-6 lg:space-y-8 overflow-visible">
+          <div className="max-w-4xl xl:max-5xl mx-auto space-y-6 lg:space-y-8 overflow-visible">
             <ProgressBar currentStep={currentStep} />
             {/* Step Content */}
             <div className="space-y-4 sm:space-y-6 transition-opacity duration-300">
@@ -647,7 +943,8 @@ export default function CheckoutPage() {
                             </span>
                           </div>
                           <p className="text-xs text-blue-600 mt-1 ml-4">
-                            You can save your address in your profile for faster checkout
+                            You can save your address in your profile for faster
+                            checkout
                           </p>
                         </div>
                       )}
@@ -675,6 +972,224 @@ export default function CheckoutPage() {
                     sameAsShipping={sameAsShipping}
                     onSameAsShippingChange={handleSameAsShippingChange}
                   />
+
+                  {/* Delivery Date & Time Section */}
+                  <div className="space-y-6">
+                    {/* Date Picker */}
+                    <div className="relative font-parastoo" ref={calendarRef}>
+                      <label className="block text-sm font-medium text-[rgba(79,79,79,0.66)] mb-3">
+                        Delivery Date (Preferred)*
+                      </label>
+                      <div
+                        className="w-full px-4 py-3 border border-gray-300 bg-white focus-within:border-[rgba(224,99,99,0.85)] text-sm text-gray-700 cursor-pointer flex items-center justify-between rounded-lg hover:border-[rgba(224,99,99,0.5)] transition-colors"
+                        onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+                      >
+                        <span
+                          className={
+                            deliveryDate ? "text-gray-700" : "text-gray-400"
+                          }
+                        >
+                          {deliveryDate
+                            ? formatDate(deliveryDate)
+                            : "Select Date"}
+                        </span>
+                        <Calendar className="w-5 h-5 text-gray-400" />
+                      </div>
+
+                      {isCalendarOpen && (
+                        <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 w-full min-w-[300px] p-4">
+                          {/* Calendar Header */}
+                          <div className="flex items-center justify-between mb-4">
+                            <button
+                              type="button"
+                              onClick={() => navigateMonth(-1)}
+                              className="p-1 hover:bg-gray-100 rounded"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M15 19l-7-7 7-7"
+                                />
+                              </svg>
+                            </button>
+                            <h3 className="text-lg font-semibold text-gray-800">
+                              {monthNames[currentMonth.getMonth()]}{" "}
+                              {currentMonth.getFullYear()}
+                            </h3>
+                            <button
+                              type="button"
+                              onClick={() => navigateMonth(1)}
+                              className="p-1 hover:bg-gray-100 rounded"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 5l7 7-7 7"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+
+                          {/* Day Headers */}
+                          <div className="grid grid-cols-7 gap-1 mb-2">
+                            {dayNames.map((day) => (
+                              <div
+                                key={day}
+                                className="text-center text-xs font-medium text-gray-500 py-2"
+                              >
+                                {day}
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Calendar Days */}
+                          <div className="grid grid-cols-7 gap-1">
+                            {generateCalendarDays().map((day, index) => (
+                              <button
+                                key={index}
+                                type="button"
+                                onClick={() =>
+                                  !day.isPastDate &&
+                                  handleDateSelect(day.dateString)
+                                }
+                                disabled={day.isPastDate}
+                                className={`
+                                  p-2 text-sm rounded transition-colors duration-200
+                                  ${
+                                    !day.isCurrentMonth
+                                      ? "text-gray-300 cursor-not-allowed"
+                                      : day.isPastDate
+                                      ? "text-gray-300 cursor-not-allowed"
+                                      : day.isSelected
+                                      ? "bg-[rgba(224,99,99,0.85)] text-white font-semibold"
+                                      : day.isToday
+                                      ? "bg-[rgba(224,99,99,0.1)] text-[rgba(224,99,99,0.85)] font-semibold border border-[rgba(224,99,99,0.85)]"
+                                      : "text-gray-700 hover:bg-[rgba(224,99,99,0.1)] hover:text-[rgba(224,99,99,0.85)]"
+                                  }
+                                `}
+                              >
+                                {day.day}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Time Picker */}
+                    <div className="relative font-parastoo" ref={timeRef}>
+                      <label className="block text-sm font-medium text-[rgba(79,79,79,0.66)] mb-3">
+                        Delivery Time (Preferred)*
+                      </label>
+                      <div
+                        className={`w-full px-4 py-3 border border-gray-300 bg-white text-sm cursor-pointer flex items-center justify-between rounded-lg hover:border-[rgba(224,99,99,0.5)] transition-colors ${
+                          !deliveryDate
+                            ? "opacity-50 cursor-not-allowed"
+                            : "focus-within:border-[rgba(224,99,99,0.85)]"
+                        }`}
+                        onClick={() => {
+                          if (deliveryDate) {
+                            setIsTimeOpen(!isTimeOpen);
+                          }
+                        }}
+                      >
+                        <span
+                          className={
+                            deliveryTime ? "text-gray-700" : "text-gray-400"
+                          }
+                        >
+                          {deliveryTime
+                            ? timeSlots.find(
+                                (slot) => slot.value === deliveryTime
+                              )?.label
+                            : deliveryDate
+                            ? "Select Time"
+                            : "Select date first"}
+                        </span>
+                        <Clock className="w-5 h-5 text-gray-400" />
+                      </div>
+
+                      {isTimeOpen && deliveryDate && (
+                        <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-40 w-full max-h-60 overflow-y-auto">
+                          <div className="p-2">
+                            <div className="text-xs text-gray-500 px-3 py-2 border-b">
+                              Available delivery times
+                              {deliveryDate === todayString && (
+                                <span className="block text-xs text-orange-600 mt-1">
+                                  Times shown are 1+ hours from now for same-day
+                                  delivery
+                                </span>
+                              )}
+                            </div>
+                            {timeSlots.map((slot) => (
+                              <button
+                                key={slot.value}
+                                type="button"
+                                onClick={() =>
+                                  !slot.isDisabled &&
+                                  handleTimeSelect(slot.value)
+                                }
+                                disabled={slot.isDisabled}
+                                className={`w-full text-left px-3 py-2 text-sm transition-colors ${
+                                  slot.isDisabled
+                                    ? "text-gray-300 cursor-not-allowed bg-gray-50"
+                                    : deliveryTime === slot.value
+                                    ? "bg-[rgba(224,99,99,0.85)] text-white font-semibold"
+                                    : "text-gray-700 hover:bg-[rgba(224,99,99,0.1)] hover:text-[rgba(224,99,99,0.85)]"
+                                }`}
+                              >
+                                {slot.label}
+                                {slot.isPastTime && (
+                                  <span className="text-xs ml-2 opacity-60">
+                                    (Past)
+                                  </span>
+                                )}
+                              </button>
+                            ))}
+                            {timeSlots.every((slot) => slot.isDisabled) && (
+                              <div className="px-3 py-4 text-center text-sm text-gray-500">
+                                No available time slots for today.
+                                <br />
+                                Please select a future date.
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Selected Date & Time Display */}
+                    {(deliveryDate || deliveryTime) && (
+                      <div className="bg-[rgba(224,99,99,0.1)] border border-[rgba(224,99,99,0.3)] rounded-lg p-4">
+                        <h4 className="text-sm font-medium text-[rgba(79,79,79,0.66)] mb-2">
+                          Selected Delivery Schedule:
+                        </h4>
+                        <p className="text-[rgba(224,99,99,0.85)] font-semibold">
+                          {formatDisplayDateTime()}
+                        </p>
+                        {deliveryDate && deliveryTime && (
+                          <p className="text-xs text-gray-600 mt-1">
+                            We'll do our best to deliver within your preferred
+                            time slot
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
 
                   <h3
                     className="text-xl sm:text-2xl font-bold mb-4 mt-6 sm:mt-8"

@@ -71,6 +71,7 @@ export default function DeliverySteps() {
                   }}
                 >
                   <img
+                    draggable="false"
                     src={steps[currentStep].img}
                     alt={steps[currentStep].text}
                     className="w-full h-full object-cover rounded-full"

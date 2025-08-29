@@ -40,6 +40,7 @@ function CustomizationContent() {
             <div className="animate-scroll-up-slow flex flex-col gap-4 absolute top-0 left-0 right-0">
               {doubledOddImages.map((src, index) => (
                 <img 
+                  draggable="false"
                   key={`col1-${index}`}
                   src={src}
                   alt={`Gallery ${index + 1}`}
@@ -54,6 +55,7 @@ function CustomizationContent() {
             <div className="animate-scroll-down-fast flex flex-col gap-4 absolute top-0 left-0 right-0">
               {doubledEvenImages.map((src, index) => (
                 <img 
+                  draggable="false"
                   key={`col2-${index}`}
                   src={src}
                   alt={`Gallery ${index + 1}`}

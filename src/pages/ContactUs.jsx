@@ -202,101 +202,140 @@ const ContactUs = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Contact Form */}
           <div className="bg-white p-8 rounded-lg shadow-lg h-fit">
-            <h2 className="font-parastoo text-3xl text-[rgba(79,79,79,0.66)] mb-6">
-              Send us a Message
-            </h2>
-            
-            {isSubmitted && (
-              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
-                <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                <span className="text-green-700 font-parastoo">Thank you! We'll get back to you soon.</span>
-              </div>
-            )}
+              <h2 className="font-parastoo text-3xl text-[rgba(79,79,79,0.66)] mb-6">
+                  Send us a Message
+              </h2>
 
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your Name*"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Your Email*"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
-                    />
-                </div>
-              </div>
+              {isSubmitted && (
+                  <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
+                      <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                      <span className="text-green-700 font-parastoo">Thank you! We'll get back to you soon.</span>
+                  </div>
+              )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
-                  />
-                </div>
-                <div>
-                  <select
-                    name="inquiryType"
-                    value={formData.inquiryType}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
+              <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                          <input
+                              type="text"
+                              name="name"
+                              placeholder="Your Name"
+                              value={formData.name}
+                              onChange={handleInputChange}
+                              required
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
+                          />
+                      </div>
+                      <div>
+                          <input
+                              type="email"
+                              name="email"
+                              placeholder="Your Email"
+                              value={formData.email}
+                              onChange={handleInputChange}
+                              required
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
+                          />
+                      </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                          <input
+                              type="tel"
+                              name="phone"
+                              placeholder="Phone Number"
+                              value={formData.phone}
+                              onChange={handleInputChange}
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
+                          />
+                      </div>
+                      <div>
+                          <select
+                              name="inquiryType"
+                              value={formData.inquiryType}
+                              onChange={handleInputChange}
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
+                          >
+                              <option value="general">General Inquiry</option>
+                              <option value="catering">Event Catering</option>
+                              <option value="delivery">Delivery Inquiry</option>
+                              <option value="partnership">Partnership Inquiry</option>
+                              <option value="wholesale">Wholesale Inquiry</option>
+                          </select>
+                      </div>
+                  </div>
+
+                  {formData.inquiryType === 'delivery' && (
+                      <div>
+                          <input
+                              type="text"
+                              name="deliveryId"
+                              placeholder="Delivery ID (Optional)"
+                              value={formData.deliveryId}
+                              onChange={handleInputChange}
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
+                          />
+                      </div>
+                  )}
+
+                  <div>
+                      <input
+                          type="text"
+                          name="subject"
+                          placeholder={
+                              formData.inquiryType === 'delivery'
+                                  ? 'Subject (e.g., Late Delivery, Damaged Item)'
+                                  : formData.inquiryType === 'catering'
+                                  ? 'Subject (e.g., Birthday Party, Corporate Event)'
+                                  : formData.inquiryType === 'feedback'
+                                  ? 'Subject (e.g., Your Experience with Our Bakery)'
+                                  : formData.inquiryType === 'partnership'
+                                  ? 'Subject (e.g., Business Collaboration, Marketing)'
+                                  : formData.inquiryType === 'wholesale'
+                                  ? 'Subject (e.g., Wholesale Pricing, Bulk Order)'
+                                  : 'Subject'
+                          }
+                          value={formData.subject}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
+                      />
+                  </div>
+
+                  <div>
+                      <textarea
+                          name="message"
+                          placeholder={
+                              formData.inquiryType === 'delivery'
+                                  ? 'Please provide details about your delivery, including the Delivery ID if you have it.'
+                                  : formData.inquiryType === 'catering'
+                                  ? "Tell us more about your event, including the date, number of guests, and type of treats you're interested in."
+                                  : formData.inquiryType === 'feedback'
+                                  ? 'Share your thoughts and suggestions with us.'
+                                  : formData.inquiryType === 'partnership'
+                                  ? "Describe the partnership opportunity you'd like to propose."
+                                  : formData.inquiryType === 'wholesale'
+                                  ? 'Tell us about your business and your wholesale needs.'
+                                  : "Tell us about your sweet dreams..."
+                          }
+                          value={formData.message}
+                          onChange={handleInputChange}
+                          required
+                          rows={4}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo resize-none"
+                      ></textarea>
+                  </div>
+
+                  <button
+                      type="button"
+                      onClick={handleSubmit}
+                      className="w-full bg-[rgba(224,99,99,0.85)] text-white py-4 px-6 rounded-lg font-parastoo text-lg hover:bg-opacity-90 transition-colors duration-300 flex items-center justify-center"
                   >
-                    <option value="general">General Inquiry</option>
-                    <option value="catering">Event Catering</option>
-                    <option value="feedback">Feedback</option>
-                  </select>
-                </div>
+                      <Send className="h-5 w-5 mr-2" />
+                      Send Message
+                  </button>
               </div>
-
-              <div>
-                <input
-                  type="text"
-                  name="subject"
-                  placeholder="Subject*"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo"
-                />
-              </div>
-
-              <div>
-                <textarea
-                  name="message"
-                  placeholder="Tell us about your sweet dreams...*"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[rgba(224,99,99,0.85)] font-parastoo resize-none"
-                ></textarea>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="w-full bg-[rgba(224,99,99,0.85)] text-white py-4 px-6 rounded-lg font-parastoo text-lg hover:bg-opacity-90 transition-colors duration-300 flex items-center justify-center"
-              >
-                <Send className="h-5 w-5 mr-2" />
-                Send Message
-              </button>
-            </div>
           </div>
 
           {/* Right Side - Info & Map */}

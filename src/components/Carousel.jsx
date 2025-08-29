@@ -60,6 +60,7 @@ function Carousel() {
                   <CakeCard 
                     cake={cake} 
                     onCardClick={handleCardClick}
+                    onOpenModal={handleCardClick}
                     onAddToCart={handleAddToCart}
                     cartItem={cartItem}
                     onUpdateQuantity={handleUpdateQuantity}
@@ -79,6 +80,7 @@ function Carousel() {
                   <CakeCard 
                     cake={cake} 
                     onCardClick={handleCardClick}
+                    onOpenModal={handleCardClick}
                     onAddToCart={handleAddToCart}
                     cartItem={cartItem}
                     onUpdateQuantity={handleUpdateQuantity}

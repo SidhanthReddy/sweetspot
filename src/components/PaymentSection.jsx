@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { SiPaytm, SiGooglepay } from "react-icons/si";
 import { FaUniversity } from "react-icons/fa";
+import { ErrorModal, SuccessModal } from "./ThemedModals";
 
 export default function PaymentSection({
   paymentMethod,
@@ -12,6 +13,16 @@ export default function PaymentSection({
   const stripe = useStripe();
   const elements = useElements();
   const [upiId, setUpiId] = useState("");
+  
+  // Modal states
+  const [modals, setModals] = useState({
+    success: false,
+    error: false,
+    successMessage: "",
+    errorMessage: "",
+    successTitle: "",
+    errorTitle: "",
+  });
 
   const mainPink = "rgba(224, 99, 99, 0.85)";
   const lightPink = "rgba(224, 99, 99, 0.05)";
@@ -34,9 +45,39 @@ export default function PaymentSection({
     {
       value: "cod",
       label: "Cash on Delivery",
-      desc: "You’ll pay after receiving the order",
+      desc: "You'll pay after receiving the order",
     },
   ];
+
+  // Modal helper functions
+  const showSuccessModal = (title, message) => {
+    setModals(prev => ({
+      ...prev,
+      success: true,
+      successTitle: title,
+      successMessage: message,
+    }));
+  };
+
+  const showErrorModal = (title, message) => {
+    setModals(prev => ({
+      ...prev,
+      error: true,
+      errorTitle: title,
+      errorMessage: message,
+    }));
+  };
+
+  const closeModals = () => {
+    setModals({
+      success: false,
+      error: false,
+      successMessage: "",
+      errorMessage: "",
+      successTitle: "",
+      errorTitle: "",
+    });
+  };
 
   const validateUpi = (id) =>
     /^\d{10}@(ybl|axl|paytm|okicici|oksbi|okhdfcbank|okaxis)$/.test(id);
@@ -45,14 +86,14 @@ export default function PaymentSection({
     e.preventDefault();
 
     if (!stripe || !elements) {
-      alert("Stripe is not loaded properly.");
+      showErrorModal("Payment System Error", "Payment system is not loaded properly. Please refresh the page and try again.");
       return;
     }
 
     const cardElement = elements.getElement(CardElement);
 
     if (!cardElement) {
-      alert("Card element not found.");
+      showErrorModal("Card Error", "Card element not found. Please refresh the page and try again.");
       return;
     }
 
@@ -64,19 +105,19 @@ export default function PaymentSection({
 
     if (error) {
       console.error("Stripe error:", error);
-      alert(error.message || "Payment error. Please try again.");
+      showErrorModal("Payment Failed", error.message || "Payment error. Please check your card details and try again.");
     } else {
-      alert("Payment successful via Card!");
+      showSuccessModal("Payment Successful!", `Your payment of ₹${total?.toFixed(2) ?? "0.00"} has been processed successfully via Credit Card.`);
       if (onPayment) onPayment(stripePaymentMethod.id);
     }
   };
 
   const handleUpiPayment = () => {
     if (!validateUpi(upiId)) {
-      alert("Enter a valid UPI ID (e.g., 9876543210@ybl)");
+      showErrorModal("Invalid UPI ID", "Please enter a valid UPI ID (e.g., 9876543210@ybl)");
       return;
     }
-    alert("Payment successful via UPI!");
+    showSuccessModal("Payment Successful!", `Your payment of ₹${total?.toFixed(2) ?? "0.00"} has been processed successfully via UPI.`);
     if (onPayment) onPayment(upiId);
   };
 
@@ -85,6 +126,7 @@ export default function PaymentSection({
     onPaymentMethodChange(value);
     if (value === "cod" && onPayment) {
       setTimeout(() => {
+        showSuccessModal("Order Confirmed!", `Your Cash on Delivery order of ₹${total?.toFixed(2) ?? "0.00"} has been confirmed. You'll pay when you receive your order.`);
         onPayment("cod");
       }, 300); // short delay for UX
     }
@@ -92,10 +134,11 @@ export default function PaymentSection({
 
   return (
     <div className="font-parastoo">
-      {/* Added total amount display at the top */}
+      {/* Total amount display at the top */}
       <div className="mb-6 p-4 rounded-xl border border-[rgba(224,99,99,0.3)] bg-[rgba(224,99,99,0.05)] text-[rgba(224,99,99,0.85)] font-bold text-2xl flex items-center justify-center">
         Total Amount to be Paid: ₹{total?.toFixed(2) ?? "0.00"}
       </div>
+      
       <div className="space-y-4">
         {paymentMethods.map((method) => (
           <label
@@ -213,6 +256,23 @@ export default function PaymentSection({
           </div>
         )}
       </div>
+
+      {/* Modals */}
+      <SuccessModal
+        isOpen={modals.success}
+        onClose={closeModals}
+        title={modals.successTitle}
+        message={modals.successMessage}
+        actionText="Continue"
+      />
+
+      <ErrorModal
+        isOpen={modals.error}
+        onClose={closeModals}
+        title={modals.errorTitle}
+        message={modals.errorMessage}
+        actionText="Try Again"
+      />
     </div>
   );
 }

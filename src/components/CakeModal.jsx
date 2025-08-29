@@ -125,6 +125,7 @@ const CakeModal = ({ cake, isOpen, onClose }) => {
                 <img
                   src={cake.imageURL}
                   alt={cake.name}
+                  draggable="false"
                   className="w-full h-64 sm:h-80 lg:h-96 object-cover"
                 />
                 <button
@@ -151,6 +152,7 @@ const CakeModal = ({ cake, isOpen, onClose }) => {
                   >
                     <img
                       src={cake.imageURL}
+                      draggable="false"
                       alt={`${cake.name} view ${index}`}
                       className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
                     />

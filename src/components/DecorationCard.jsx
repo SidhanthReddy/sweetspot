@@ -70,6 +70,7 @@ const DecorationCard = ({
       {/* Image Container */}
       <div className="relative overflow-hidden flex-shrink-0">
         <img
+          draggable="false"
           src={cake.imageURL}
           alt={cake.name}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"

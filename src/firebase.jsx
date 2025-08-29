@@ -9,12 +9,12 @@ import {
 } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDY6x1_HV4CrhYlwXtCpASlptkApHSiPyI",
-  authDomain: "sweetspot-be8f3.firebaseapp.com",
-  projectId: "sweetspot-be8f3",
-  storageBucket: "sweetspot-be8f3.appspot.com",
-  messagingSenderId: "150493765281",
-  appId: "1:150493765281:web:81e8d8a135a9739b6b1ae0"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);

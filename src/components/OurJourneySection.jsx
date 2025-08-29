@@ -1,60 +1,61 @@
 import React, { useState, useEffect, useRef } from 'react';
-
+import { Home, Store, Globe, Award, Sparkles, HeartHandshake } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 const OurJourneySection = () => {
   const [visibleItems, setVisibleItems] = useState(new Set());
   const [activeTimeline, setActiveTimeline] = useState(0);
   const sectionRef = useRef(null);
   const timelineRefs = useRef([]);
-
+  const navigate = useNavigate();
   // Mock journey data - replace with your actual content
   const journeyMilestones = [
     {
       year: "2018",
       title: "Sweet Beginnings",
       description: "Started our journey with a small home kitchen and a big dream to bring joy through handcrafted cakes and desserts.",
-      icon: "🏠",
+      icon: <Home className="w-5 h-5" />,
       image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop",
-      color: "from-pink-400 to-rose-400"
+      color: "from-[rgba(224,99,99,0.85)] to-[rgba(224,99,99,0.6)]"
     },
     {
       year: "2019",
       title: "First Bakery",
       description: "Opened our first physical store, welcoming customers with fresh aromas and warm smiles every morning.",
-      icon: "🏪",
+      icon: <Store className="w-5 h-5" />,
       image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=400&h=300&fit=crop",
-      color: "from-orange-400 to-red-400"
+      color: "from-[rgba(224,99,99,0.85)] to-[rgba(224,99,99,0.6)]"
     },
     {
       year: "2020",
       title: "Digital Expansion",
       description: "Launched online ordering and delivery services, adapting to serve our community during challenging times.",
-      icon: "💻",
+      icon: <Globe className="w-5 h-5" />,
       image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
-      color: "from-blue-400 to-indigo-400"
+      color: "from-[rgba(224,99,99,0.85)] to-[rgba(224,99,99,0.6)]"
     },
     {
       year: "2021",
       title: "Award Recognition",
       description: "Received 'Best Local Bakery' award and expanded our team to meet growing demand for our signature creations.",
-      icon: "🏆",
+      icon: <Award className="w-5 h-5" />,
       image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400&h=300&fit=crop",
-      color: "from-yellow-400 to-orange-400"
+      color: "from-[rgba(224,99,99,0.85)] to-[rgba(224,99,99,0.6)]"
     },
     {
       year: "2022",
       title: "Custom Creations",
       description: "Introduced personalized cake design services, making every celebration unique and memorable.",
-      icon: "🎨",
+      icon: <Sparkles className="w-5 h-5" />,
       image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
-      color: "from-purple-400 to-pink-400"
+      color: "from-[rgba(224,99,99,0.85)] to-[rgba(224,99,99,0.6)]"
     },
     {
       year: "2024",
       title: "Sweet Future",
       description: "Continuing to innovate with new flavors, sustainable practices, and expanding our reach to spread more sweetness.",
-      icon: "🚀",
+      icon: <HeartHandshake className="w-5 h-5" />,
       image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&h=300&fit=crop",
-      color: "from-green-400 to-teal-400"
+      color: "from-[rgba(224,99,99,0.85)] to-[rgba(224,99,99,0.6)]"
     }
   ];
 
@@ -81,7 +82,7 @@ const OurJourneySection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-12 border-t-4 border-[rgba(224,99,99,0.08)] px-4 b bg-[#fdf4f0]overflow-hidden">
+    <section ref={sectionRef} id="our-journey" className="relative py-12 border-t-4 border-[rgba(224,99,99,0.08)] px-4 b bg-[#fdf4f0]overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-10 left-6 w-40 h-40 bg-gradient-to-r from-[rgba(224,99,99,0.1)] to-transparent rounded-full blur-2xl animate-pulse"></div>
@@ -134,7 +135,7 @@ const OurJourneySection = () => {
                     <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-5 shadow-lg border border-white/40 hover:shadow-xl hover:bg-white/80 transition-all duration-500 hover:scale-105">
                       {/* Year badge */}
                       <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r ${milestone.color} text-white font-bold text-xs mb-3 shadow-md`}>
-                        <span className="text-sm">{milestone.icon}</span>
+                        {milestone.icon}
                         {milestone.year}
                       </div>
                       
@@ -178,6 +179,7 @@ const OurJourneySection = () => {
                   <div className="group relative overflow-hidden rounded-2xl shadow-lg">
                     <div className="aspect-[4/3] overflow-hidden">
                       <img 
+                        draggable="false"
                         src={milestone.image} 
                         alt={milestone.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -211,7 +213,7 @@ const OurJourneySection = () => {
             <p className="text-[rgba(79,79,79,0.7)] mb-4 max-w-sm text-sm">
               Join thousands of satisfied customers who have made their celebrations sweeter with us
             </p>
-            <button className="group relative bg-gradient-to-r from-[rgba(224,99,99,0.85)] to-[rgba(224,99,99,0.7)] text-white px-6 py-3 rounded-full font-semibold text-sm shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105 overflow-hidden">
+            <button onClick={()=>{navigate('/cakes'); window.scrollTo(0, 0);}} className="group relative bg-gradient-to-r from-[rgba(224,99,99,0.85)] to-[rgba(224,99,99,0.7)] text-white px-6 py-3 rounded-full font-semibold text-sm shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105 overflow-hidden">
               <span className="relative z-10">Order Your Sweet Memory</span>
               <div className="absolute inset-0 bg-gradient-to-r from-[rgba(224,99,99,0.9)] to-[rgba(224,99,99,0.8)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute -inset-1 bg-gradient-to-r from-[rgba(224,99,99,0.4)] to-transparent rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
